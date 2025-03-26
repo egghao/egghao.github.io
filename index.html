@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haw Hsiao - Computer Vision & Machine Learning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <header class="container mx-auto px-4 py-6 flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Haw Hsiao</h1>
+        <nav>
+            <ul class="flex space-x-6">
+                <li><a href="#about" class="hover:text-blue-300 transition duration-300">About</a></li>
+                <li><a href="#work" class="hover:text-blue-300 transition duration-300">Work</a></li>
+                <li><a href="#skills" class="hover:text-blue-300 transition duration-300">Skills</a></li>
+                <li><a href="#contact" class="hover:text-blue-300 transition duration-300">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-10">
+        <section id="about" class="mb-16">
+            <h2 class="text-4xl font-semibold text-blue-400 mb-4">About Me</h2>
+            <p class="text-lg text-gray-300">
+                I am a highly skilled and passionate engineer with a strong background in Computer Vision and Machine Learning.  My experience includes optimizing 3D reconstruction pipelines, developing advanced image processing techniques, and architecting efficient object detection frameworks. I am proficient in Python, C++, CUDA, and Swift, and I am always eager to tackle new challenges and contribute to innovative projects.
+            </p>
+        </section>
+
+        <section id="work" class="mb-16">
+            <h2 class="text-4xl font-semibold text-blue-400 mb-8">Work Experience</h2>
+            <div class="space-y-12">
+                <div class="bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-700">
+                    <h3 class="text-2xl font-semibold text-purple-300 mb-2">HOMEE AI</h3>
+                    <p class="text-gray-400 mb-2">Python, PyTorch, CUDA, 3DGS, iOS | Taipei, Taiwan | Jun 2024 - Present</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300">
+                        <li>Optimized 3D reconstruction pipeline with CUDA, reducing latency by 10x.</li>
+                        <li>Developed Scan Quality Metrics for real-time user feedback.</li>
+                        <li>Refined Bundle Adjustment (BA) for improved 3D reconstruction accuracy.</li>
+                         <li>Worked closely with product, operations, and external stakeholders.</li>
+                        <li>Refined Swift Scan app with Scenekit.</li>
+                        <li>Engineered Metal-optimized occlusion culling (5ms/frame on iPhone 16 Pro).</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-700">
+                    <h3 class="text-2xl font-semibold text-purple-300 mb-2">FAVITE AOI</h3>
+                    <p class="text-gray-400 mb-2">Python, C++, CUDA, Image Processing | Hsinchu, Taiwan | Mar 2021 - May 2024</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300">
+                        <li>Reduced false-positive rate in image classification to &lt;1%.</li>
+                        <li>Devised FPGA-optimized CNN pipeline, reducing false negatives from 30% to 5%.</li>
+                        <li>Architected latency-aware object detection framework (5x acceleration).</li>
+                        <li>Engineered 53% end-to-end latency reduction in object detection (800+ FPS on RTX 4090).</li>
+                         <li>Designed and integrated distribution-aware augmentation frameworks.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="mb-16">
+            <h2 class="text-4xl font-semibold text-blue-400 mb-8">Skills</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-semibold text-purple-300 mb-4">Programming</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300">
+                        <li><span class="font-semibold">3+ years:</span> Python, C/C++, CUDA</li>
+                        <li><span class="font-semibold">1+ years:</span> Swift</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold text-purple-300 mb-4">Frameworks & Libraries</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300">
+                        <li>PyTorch, TensorFlow, TensorRT</li>
+                        <li>OpenCV, Open3D</li>
+                        <li>Scenekit, Roomplan, SwiftUI</li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 class="text-2xl font-semibold text-purple-300 mb-4">Technology</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300">
+                        <li>Machine Learning, Computer Vision</li>
+                        <li>Git/GitHub, GCP, Docker</li>
+                        <li>Linux, MacOS, Windows</li>
+                        <li>Jira, Confluence</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="mb-16">
+            <h2 class="text-4xl font-semibold text-blue-400 mb-8">Contact</h2>
+            <p class="text-lg text-gray-300 mb-4">
+                Email: s910247@gmail.com | Phone: 0978-273-649
+            </p>
+            <div class="flex space-x-4">
+                <a href="https://github.com/your-github-profile" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 transition duration-300">GitHub</a>
+                <a href="https://www.linkedin.com/in/your-linkedin-profile" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 transition duration-300">LinkedIn</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 py-4 text-center text-gray-400">
+        <p>&copy; 2024 Haw Hsiao. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -3,109 +3,588 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haw Hsiao - Computer Vision & Machine Learning</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <title>Haw Hsiao | Futuristic Developer Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-scale:hover {
+            transform: scale(1.03);
+        }
+        
+        #three-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .project-card {
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover {
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
-    <header class="container mx-auto px-4 py-6 flex justify-between items-center">
-        <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Haw Hsiao</h1>
-        <nav>
-            <ul class="flex space-x-6">
-                <li><a href="#about" class="hover:text-blue-300 transition duration-300">About</a></li>
-                <li><a href="#work" class="hover:text-blue-300 transition duration-300">Work</a></li>
-                <li><a href="#skills" class="hover:text-blue-300 transition duration-300">Skills</a></li>
-                <li><a href="#contact" class="hover:text-blue-300 transition duration-300">Contact</a></li>
-            </ul>
+<body>
+    <div class="custom-cursor"></div>
+    <div id="three-container"></div>
+    
+    <div class="min-h-screen flex flex-col">
+        <!-- Navigation -->
+        <nav class="py-6 px-8 md:px-16 flex justify-between items-center">
+            <div class="text-2xl font-bold gradient-text">Haw Hsiao</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="nav-link text-white hover:text-blue-400 transition">About</a>
+                <a href="#work" class="nav-link text-white hover:text-purple-400 transition">Work</a>
+                <a href="#projects" class="nav-link text-white hover:text-pink-400 transition">Projects</a>
+                <a href="#contact" class="nav-link text-white hover:text-blue-400 transition">Contact</a>
+            </div>
+            <button class="md:hidden text-white">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
         </nav>
-    </header>
-
-    <main class="container mx-auto px-4 py-10">
-        <section id="about" class="mb-16">
-            <h2 class="text-4xl font-semibold text-blue-400 mb-4">About Me</h2>
-            <p class="text-lg text-gray-300">
-                I am a highly skilled and passionate engineer with a strong background in Computer Vision and Machine Learning.  My experience includes optimizing 3D reconstruction pipelines, developing advanced image processing techniques, and architecting efficient object detection frameworks. I am proficient in Python, C++, CUDA, and Swift, and I am always eager to tackle new challenges and contribute to innovative projects.
-            </p>
-        </section>
-
-        <section id="work" class="mb-16">
-            <h2 class="text-4xl font-semibold text-blue-400 mb-8">Work Experience</h2>
-            <div class="space-y-12">
-                <div class="bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-700">
-                    <h3 class="text-2xl font-semibold text-purple-300 mb-2">HOMEE AI</h3>
-                    <p class="text-gray-400 mb-2">Python, PyTorch, CUDA, 3DGS, iOS | Taipei, Taiwan | Jun 2024 - Present</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-300">
-                        <li>Optimized 3D reconstruction pipeline with CUDA, reducing latency by 10x.</li>
-                        <li>Developed Scan Quality Metrics for real-time user feedback.</li>
-                        <li>Refined Bundle Adjustment (BA) for improved 3D reconstruction accuracy.</li>
-                         <li>Worked closely with product, operations, and external stakeholders.</li>
-                        <li>Refined Swift Scan app with Scenekit.</li>
-                        <li>Engineered Metal-optimized occlusion culling (5ms/frame on iPhone 16 Pro).</li>
-                    </ul>
-                </div>
-                <div class="bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-700">
-                    <h3 class="text-2xl font-semibold text-purple-300 mb-2">FAVITE AOI</h3>
-                    <p class="text-gray-400 mb-2">Python, C++, CUDA, Image Processing | Hsinchu, Taiwan | Mar 2021 - May 2024</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-300">
-                        <li>Reduced false-positive rate in image classification to &lt;1%.</li>
-                        <li>Devised FPGA-optimized CNN pipeline, reducing false negatives from 30% to 5%.</li>
-                        <li>Architected latency-aware object detection framework (5x acceleration).</li>
-                        <li>Engineered 53% end-to-end latency reduction in object detection (800+ FPS on RTX 4090).</li>
-                         <li>Designed and integrated distribution-aware augmentation frameworks.</li>
-                    </ul>
+        
+        <!-- Hero Section -->
+        <section class="flex-grow flex items-center px-8 md:px-16 py-16">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                    <span class="gradient-text">Haw Hsiao</span>
+                    <!-- <br>
+                    <span class="text-white">Experiences</span> -->
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+                    Specializing in AI/ML, Computer Vision, and 3D Reconstruction using Python, C++, CUDA, and Swift.
+                    Building performant and scalable solutions.
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <a href="#contact" class="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-white font-medium hover:opacity-90 transition">
+                        Get in Touch
+                    </a>
+                    <a href="#work" class="px-8 py-3 border border-gray-600 rounded-full text-white font-medium hover:bg-gray-800 transition">
+                        View Work
+                    </a>
                 </div>
             </div>
         </section>
+        
+        <!-- About Section -->
+        <section id="about" class="py-20 px-8 md:px-16">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">
+                    <span class="gradient-text">About Me</span>
+                </h2>
+                <div class="space-y-12">
+                    <div class="glass-card p-8 rounded-2xl hover-scale max-w-4xl mx-auto">
+                        <h3 class="text-2xl font-bold mb-4 text-center">Who I Am</h3>
+                        <p class="text-gray-300 mb-6 text-left">
+                            I'm a passionate developer with expertise in Python, C++, CUDA, and modern AI/ML technologies.
+                            With over 3 years of professional experience, I specialize in creating performant computer vision and 3D reconstruction solutions.
+                            My approach combines technical excellence with thoughtful design to 
+                            deliver solutions that are both powerful and intuitive.
+                        </p>
+                        <p class="text-gray-300 text-left">
+                            
+                        </p>
+                    </div>
+                    
+                    <div class="space-y-6">
+                         <h3 class="text-2xl font-bold mb-6 text-center">My Stack</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="glass-card rounded-2xl hover-scale border border-gray-700 h-full py-6">
+                                <h4 class="text-lg font-semibold mb-3 text-blue-400 px-6">Programming Languages</h4>
+                                <div class="grid grid-cols-2 gap-x-4 gap-y-2 px-6">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fab fa-python text-blue-500 text-xl"></i>
+                                        <span class="text-gray-300">Python</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-laptop-code text-gray-400 text-xl"></i>
+                                        <span class="text-gray-300">C/C++</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-microchip text-green-500 text-xl"></i>
+                                        <span class="text-gray-300">CUDA</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fab fa-swift text-orange-500 text-xl"></i>
+                                        <span class="text-gray-300">Swift</span>
+                                    </div>
+                                </div>
+                            </div>
 
-        <section id="skills" class="mb-16">
-            <h2 class="text-4xl font-semibold text-blue-400 mb-8">Skills</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                    <h3 class="text-2xl font-semibold text-purple-300 mb-4">Programming</h3>
-                    <ul class="list-disc list-inside space-y-2 text-gray-300">
-                        <li><span class="font-semibold">3+ years:</span> Python, C/C++, CUDA</li>
-                        <li><span class="font-semibold">1+ years:</span> Swift</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-2xl font-semibold text-purple-300 mb-4">Frameworks & Libraries</h3>
-                    <ul class="list-disc list-inside space-y-2 text-gray-300">
-                        <li>PyTorch, TensorFlow, TensorRT</li>
-                        <li>OpenCV, Open3D</li>
-                        <li>Scenekit, Roomplan, SwiftUI</li>
-                    </ul>
-                </div>
-                 <div>
-                    <h3 class="text-2xl font-semibold text-purple-300 mb-4">Technology</h3>
-                    <ul class="list-disc list-inside space-y-2 text-gray-300">
-                        <li>Machine Learning, Computer Vision</li>
-                        <li>Git/GitHub, GCP, Docker</li>
-                        <li>Linux, MacOS, Windows</li>
-                        <li>Jira, Confluence</li>
-                    </ul>
+                            <div class="glass-card rounded-2xl hover-scale border border-gray-700 h-full py-6">
+                                <h4 class="text-lg font-semibold mb-3 text-pink-400 px-6">AI/ML & Vision</h4>
+                                <div class="grid grid-cols-2 gap-x-4 gap-y-2 px-6">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-brain text-pink-500 text-xl"></i>
+                                        <span class="text-gray-300">PyTorch</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-brain text-orange-400 text-xl"></i>
+                                        <span class="text-gray-300">TensorFlow</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-rocket text-green-400 text-xl"></i>
+                                        <span class="text-gray-300">TensorRT</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-eye text-teal-400 text-xl"></i>
+                                        <span class="text-gray-300">OpenCV</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-robot text-purple-400 text-xl"></i> 
+                                        <span class="text-gray-300">Machine Learning</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-camera-retro text-yellow-500 text-xl"></i>
+                                        <span class="text-gray-300">Computer Vision</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="glass-card rounded-2xl hover-scale border border-gray-700 h-full py-6">
+                                <h4 class="text-lg font-semibold mb-3 text-purple-400 px-6">Mobile & 3D</h4>
+                                <div class="grid grid-cols-2 gap-x-4 gap-y-2 px-6">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-cubes text-indigo-400 text-xl"></i>
+                                        <span class="text-gray-300">Open3D</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fab fa-apple text-gray-300 text-xl"></i>
+                                        <span class="text-gray-300">SwiftUI</span>
+                                    </div>
+                                     <div class="flex items-center space-x-2">
+                                        <i class="fas fa-mobile-alt text-gray-500 text-xl"></i> 
+                                        <span class="text-gray-300">SceneKit/RoomPlan</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="glass-card rounded-2xl hover-scale border border-gray-700 h-full py-6">
+                                <h4 class="text-lg font-semibold mb-3 text-gray-400 px-6">Tools & Platforms</h4>
+                                <div class="grid grid-cols-2 gap-x-4 gap-y-2 px-6">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fab fa-git-alt text-orange-600 text-xl"></i>
+                                        <span class="text-gray-300">Git/Github</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fab fa-google text-blue-400 text-xl"></i>
+                                        <span class="text-gray-300">GCP</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fab fa-docker text-blue-600 text-xl"></i>
+                                        <span class="text-gray-300">Docker</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fab fa-linux text-yellow-300 text-xl"></i>
+                                        <span class="text-gray-300">Linux</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fab fa-apple text-gray-300 text-xl"></i>
+                                        <span class="text-gray-300">MacOS</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fab fa-windows text-blue-400 text-xl"></i>
+                                        <span class="text-gray-300">Windows</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fab fa-jira text-blue-700 text-xl"></i>
+                                        <span class="text-gray-300">Jira/Confluence</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
-
-        <section id="contact" class="mb-16">
-            <h2 class="text-4xl font-semibold text-blue-400 mb-8">Contact</h2>
-            <p class="text-lg text-gray-300 mb-4">
-                Email: s910247@gmail.com | Phone: 0978-273-649
-            </p>
-            <div class="flex space-x-4">
-                <a href="https://github.com/your-github-profile" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 transition duration-300">GitHub</a>
-                <a href="https://www.linkedin.com/in/your-linkedin-profile" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 transition duration-300">LinkedIn</a>
+        
+        <!-- Work Experience -->
+        <section id="work" class="py-20 px-8 md:px-16 bg-gradient-to-b from-gray-900 to-black">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">
+                    <span class="gradient-text">Work Experience</span>
+                </h2>
+                <div class="space-y-8">
+                    <div class="glass-card p-8 rounded-2xl hover-scale">
+                        <div class="flex flex-col md:flex-row justify-between mb-4">
+                            <h3 class="text-2xl font-bold">HOMEE AI</h3>
+                            <span class="text-blue-400">Jun 2024 – Present | Taipei, Taiwan</span>
+                        </div>
+                        <ul class="list-disc list-inside text-gray-300 space-y-2">
+                            <li>Optimized 3D reconstruction pipeline by implementing CUDA-accelerated image undistortion, reducing processing latency by <strong class="text-teal-400">10x</strong>.</li>
+                            <li>Developed Scan Quality Metrics: Designed and deployed real-time feedback mechanisms to assess scan completeness and quality, enhancing the overall user experience.</li>
+                            <li>Refined Bundle Adjustment (BA) Performance: Conducted in-depth error analysis and iterative optimization to improve the accuracy and stability of 3D reconstructions.</li>
+                            <li>Cross-Functional Collaboration: Worked closely with teams across product, operations, and external stakeholders to deliver high-quality demonstrations and scalable 3D solutions.</li>
+                            <li>Refined a Swift Scan app with Scenekit for higher scanning coverage of the scene for 3DGS modeling.</li>
+                            <li>Engineered Metal-optimized occlusion culling, achieving <strong class="text-teal-400">5ms/frame</strong> detection latency on iPhone 16Pro via depth rendering and multi-threading.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="glass-card p-8 rounded-2xl hover-scale">
+                        <div class="flex flex-col md:flex-row justify-between mb-4">
+                            <h3 class="text-2xl font-bold">FAVITE AOI</h3>
+                            <span class="text-purple-400">Mar 2021 – May 2024 | Hsinchu, Taiwan</span>
+                        </div>
+                        <ul class="list-disc list-inside text-gray-300 space-y-2">
+                            <li>Developed <strong class="text-teal-400">5%</strong> false-positive reduction (now <strong class="text-teal-400">&lt;1%</strong>) in image classification by creating novel regularization algorithms and overcoming data scarcity constraints.</li>
+                            <li>Devised an FPGA-optimized CNN pipeline reducing false negatives by <strong class="text-teal-400">30%</strong> via novel quantization-aware augmentation strategies, balancing computational efficiency with deployment constraints.</li>
+                            <li>Architected a latency-aware object detection framework achieving <strong class="text-teal-400">5x</strong> acceleration (<strong class="text-teal-400">20ms</strong> on consumer-grade GPUs) through multi-stage neural architecture co-optimization.</li>
+                            <li>Engineered a <strong class="text-teal-400">53%</strong> end-to-end latency reduction in object detection pipelines via TensorRT kernel-level optimizations with memory hierarchy profiling, boosting throughput to over <strong class="text-teal-400">800FPS</strong> on NVIDIA RTX4090.</li>
+                            <li>Designed and integrated novel distribution-aware augmentation frameworks into computer vision pipelines, boosting minority class mAP by <strong class="text-teal-400">32%</strong> while maintaining <strong class="text-teal-400">98%</strong> recall integrity.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </section>
-    </main>
+        
+        <!-- Projects -->
+        <section id="projects" class="py-20 px-8 md:px-16">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">
+                    <span class="gradient-text">Projects</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Project Card 1 -->
+                    <div class="glass-card rounded-2xl overflow-hidden hover-scale">
+                        <div class="aspect-w-16 aspect-h-9 bg-gray-800">
+                            <!-- Replace project image placeholder with actual image -->
+                            <img src="xplorer_project.png" alt="Xplorer Project Preview" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Xplorer: 3D Indoor Tour</h3>
+                            <p class="text-gray-300 mb-4">
+                                High-performance 3D reconstruction system utilizing computer vision and deep learning techniques.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-3 py-1 bg-blue-500/20 rounded-full text-blue-400 text-sm">Python</span>
+                                <span class="px-3 py-1 bg-green-500/20 rounded-full text-green-400 text-sm">CUDA</span>
+                                <span class="px-3 py-1 bg-purple-500/20 rounded-full text-purple-400 text-sm">PyTorch</span>
+                            </div>
+                            <a href="https://www.homee.ai/xplorer" class="text-blue-400 hover:text-blue-300 transition flex items-center space-x-2">
+                                <span>View Project</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
 
-    <footer class="bg-gray-800 py-4 text-center text-gray-400">
-        <p>&copy; 2024 Haw Hsiao. All rights reserved.</p>
-    </footer>
+                    <!-- Project Card 2 -->
+                    <div class="glass-card rounded-2xl overflow-hidden hover-scale">
+                        <div class="aspect-w-16 aspect-h-9 bg-gray-800">
+                            <!-- Placeholder for project image -->
+                            <img src="numpy_puzzle_project.png" alt="Numpy Puzzle P roject Preview" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Numpy Puzzle</h3>
+                            <p class="text-gray-300 mb-4">
+                                A toy coding platform built for neural network learners to practice implementing common NN operators.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-3 py-1 bg-orange-500/20 rounded-full text-orange-400 text-sm">Numpy</span>
+                                <span class="px-3 py-1 bg-blue-500/20 rounded-full text-blue-400 text-sm">Deep Learning</span>
+                                <span class="px-3 py-1 bg-purple-500/20 rounded-full text-purple-400 text-sm">Javascript</span>
+                            </div>
+                            <a href="https://numpypuzzle.vercel.app"  class="text-blue-400 hover:text-blue-300 transition flex items-center space-x-2">
+                                <span>View Project</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 3 -->
+                    <div class="glass-card rounded-2xl overflow-hidden hover-scale">
+                        <div class="aspect-w-16 aspect-h-9 bg-gray-800">
+                            <!-- Replace project image placeholder with actual image -->
+                            <img src="person_tracking.png" alt="Person Tracking Project Preview" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Person Tracking</h3>
+                            <p class="text-gray-300 mb-4">
+                                Real-time person tracking module with YOLO and ByteTrack using Ultralytics for a outdoor surveillance system.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-3 py-1 bg-green-500/20 rounded-full text-green-400 text-sm">Python</span>
+                                <span class="px-3 py-1 bg-blue-500/20 rounded-full text-blue-400 text-sm">Computer Vision</span>
+                                <!-- <span class="px-3 py-1 bg-yellow-500/20 rounded-full text-yellow-400 text-sm">TensorRT</span> -->
+                            </div>
+                            <a href="https://github.com/egghao/PersonTracking" target="_blank" class="text-blue-400 hover:text-blue-300 transition flex items-center space-x-2">
+                                <span>View Project</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Education -->
+        <section id="education" class="py-20 px-8 md:px-16">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">
+                    <span class="gradient-text">Education</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="glass-card p-8 rounded-2xl hover-scale">
+                        <h3 class="text-2xl font-bold mb-4">National Taiwan University</h3>
+                        <p class="text-gray-300 mb-2">Master of Mechanical Engineering (2018 - 2020) | Taipei, Taiwan</p>
+                        <p class="text-gray-300">Cumulative GPA: 4.0 / 4.3</p>
+                    </div>
+                    <div class="glass-card p-8 rounded-2xl hover-scale">
+                        <h3 class="text-2xl font-bold mb-4">National Taiwan University</h3>
+                        <p class="text-gray-300 mb-2">Bachelor of Mechanical Engineering (2014 - 2018) | Taipei, Taiwan</p>
+                        <p class="text-gray-300">Cumulative GPA: 3.8 / 4.3</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact -->
+        <section id="contact" class="py-20 px-8 md:px-16 bg-gradient-to-b from-black to-gray-900">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">
+                    <span class="gradient-text">Get In Touch</span>
+                </h2>
+                <div class="glass-card p-8 md:p-12 rounded-2xl">
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-gray-300 mb-2">Name</label>
+                                <input type="text" id="name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-gray-300 mb-2">Email</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-gray-300 mb-2">Subject</label>
+                            <input type="text" id="subject" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-300 mb-2">Message</label>
+                            <textarea id="message" rows="5" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white font-medium hover:opacity-90 transition">
+                            Send Message
+                        </button>
+                    </form>
+                    <div class="mt-12 flex flex-wrap justify-center gap-6">
+                        <a href="https://github.com/egghao" target="_blank" class="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition">
+                            <i class="fab fa-github text-xl"></i>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/haw-hsiao-24b2941a2/" class="flex items-center space-x-2 text-gray-300 hover:text-blue-500 transition">
+                            <i class="fab fa-linkedin text-xl"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="mailto:s910247@gmail.com" class="flex items-center space-x-2 text-gray-300 hover:text-red-400 transition">
+                            <i class="fas fa-envelope text-xl"></i>
+                            <span>Gmail</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="py-8 px-8 md:px-16 text-center text-gray-400">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="#" class="hover:text-white transition"><i class="fab fa-github"></i></a>
+                    <a href="#" class="hover:text-white transition"><i class="fab fa-linkedin"></i></a>
+                </div>
+                <p class="text-sm">© 2024 Haw Hsiao. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Custom cursor
+        const cursor = document.querySelector('.custom-cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        
+        // Three.js scene
+        const container = document.getElementById('three-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+        
+        // Create a floating sphere
+        const geometry = new THREE.SphereGeometry(2, 32, 32);
+        const material = new THREE.MeshPhongMaterial({
+            color: 0x3b82f6,
+            emissive: 0x8b5cf6,
+            emissiveIntensity: 0.5,
+            shininess: 100,
+            transparent: true,
+            opacity: 0.8
+        });
+        
+        const sphere = new THREE.Mesh(geometry, material);
+        scene.add(sphere);
+        
+        // Add lights
+        const ambientLight = new THREE.AmbientLight(0x404040);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(1, 1, 1);
+        scene.add(directionalLight);
+        
+        const pointLight = new THREE.PointLight(0x8b5cf6, 1, 100);
+        pointLight.position.set(5, 5, 5);
+        scene.add(pointLight);
+        
+        camera.position.z = 5;
+        
+        // Mouse movement effect
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+        
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Sphere follows mouse with slight delay
+            sphere.position.x += (mouseX * 3 - sphere.position.x) * 0.05;
+            sphere.position.y += (mouseY * 3 - sphere.position.y) * 0.05;
+            
+            // Rotate sphere
+            sphere.rotation.x += 0.005;
+            sphere.rotation.y += 0.01;
+            
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Add hover effect to project cards
+        const projectCards = document.querySelectorAll('.project-card');
+        
+        projectCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const gradient = card.querySelector('div');
+                if (gradient) {
+                    gradient.style.transform = 'scale(1.05)';
+                }
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                const gradient = card.querySelector('div');
+                if (gradient) {
+                    gradient.style.transform = 'scale(1)';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
